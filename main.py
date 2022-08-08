@@ -27,8 +27,7 @@ def home():
 def predictRouteClient():
     try:
         if request.json is not None:
-            path = request.json['path1']
-            print(path)
+            path = request.json['filepath']
 
             pred_val = pred_validation(path) #object initialization
 
@@ -41,7 +40,6 @@ def predictRouteClient():
             return Response("Prediction File created at %s!!!" % path)
         elif request.form is not None:
             path = request.form['filepath']
-
 
             pred_val = pred_validation(path) #object initialization
 
@@ -92,4 +90,8 @@ def trainRouteClient():
 
 port = int(os.getenv("PORT",5000))
 if __name__ == "__main__":
-    app.run(debug=True)
+    host = '0.0.0.0'
+    #port = 5000
+    httpd = simple_server.make_server(host, port, app)
+    # print("Serving on %s %d" % (host, port))
+    httpd.serve_forever()
